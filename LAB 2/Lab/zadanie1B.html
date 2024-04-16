@@ -1,0 +1,45 @@
+<html>
+  <body
+    onLoad="
+            console.log('Tekst 1');
+            window.alert('Tekst 2');
+            /*document.write('Tekst 3');*/
+          "
+  >
+    <form
+      name="formsik"
+      oninput="wynik.value = pole_tekstowe.value + pole_liczbowe.value"
+    >
+      <input
+        name="pole_tekstowe"
+        id="pole_tekstowe"
+        placeholder="Wprowadź tekst"
+        type="text"
+      />
+      +
+      <input
+        name="pole_liczbowe"
+        id="pole_liczbowe"
+        type="number"
+        placeholder="Wprowadź liczbę"
+      />
+      =
+      <output name="wynik" for="pole_tekstowe pole_liczbowe"
+        >Tu pojawi się wynik obliczeń</output
+      >
+      <br />
+      <input
+        type="button"
+        id="klik"
+        value="Wypisz"
+        onclick="alert('Kliknięto  Wypisz!')"
+      />
+    </form>
+    <div>Treść dokumentu HTML</div>
+    <div>Treść dokumentu HTML</div>
+    <div>Treść dokumentu HTML</div>
+  </body>
+  <script src="zadanie1.js">
+    //window.prompt("Tekst1", "Tekst2");
+  </script>
+</html>

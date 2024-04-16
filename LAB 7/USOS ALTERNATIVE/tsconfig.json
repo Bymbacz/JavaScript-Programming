@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "es2022",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "baseUrl": "./",
+    "pretty": true,
+    "paths": {
+      "*": ["*", "src/*", "src/public/*", "src/node_modules/*"]
+    },
+    "allowImportingTsExtensions": true
+  },
+  "include": ["src/**/*"]
+}

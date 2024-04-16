@@ -1,0 +1,5 @@
+po kliknieciu USOS formularz logowania
+losuje od 0 do 9, parzysta - ok, nieparzysta alert
+
+Login i hasło porównanie z bazą danych
+po zalogowaniu (dobrym) wyswietla sie na glownej to co chcesz

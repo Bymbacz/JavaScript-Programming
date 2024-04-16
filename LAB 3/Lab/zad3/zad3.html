@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animation</title>
+    <script
+      src="https://unpkg.com/react/umd/react.development.js"
+      crossorigin=""
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom/umd/react-dom.development.js"
+      crossorigin=""
+    ></script>
+    <script src="https://unpkg.com/babel-standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <form onsubmit="event.preventDefault();">
+      <div id="c1"></div>
+      <!-- ************************************************************** -->
+      <hr />
+      <h2>Time-consuming calculations — version 1</h2>
+      <div id="szary1"></div>
+      <!-- ************************************************************** -->
+      <hr />
+      <div id="c2"></div>
+      <!-- ************************************************************** -->
+      <hr />
+      <h2>Time-consuming calculations — version 2</h2>
+      <div id="szary2"></div>
+      <!-- ************************************************************** -->
+    </form>
+    <script type="text/babel">
+      class Counter extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            count: 0,
+            animationId: null,
+            isRunning: false,
+          };
+        }
+
+        startAnimation = () => {
+          if (!this.state.isRunning) {
+            this.setState({
+              isRunning: true,
+            });
+            this.animate();
+          }
+        };
+
+        stopAnimation = () => {
+          if (this.state.isRunning) {
+            cancelAnimationFrame(this.state.animationId);
+            this.setState({
+              isRunning: false,
+            });
+          }
+        };
+
+        animate = () => {
+          const animationId = requestAnimationFrame(this.animate);
+          this.setState((prevState) => ({
+            count: prevState.count + 1,
+            animationId: animationId,
+          }));
+        };
+
+        render() {
+          const { count, isRunning } = this.state;
+
+          return (
+            <div>
+              <h2>Counter</h2>
+              <label htmlFor="counter">Counter→</label>
+              <output id="counter" style={{ fontSize: "4vh", color: "red" }}>
+                {count}
+              </output>
+              <br />
+              <button
+                id="start"
+                onClick={this.startAnimation}
+                disabled={isRunning}
+              >
+                Start
+              </button>
+              <button
+                id="stop"
+                onClick={this.stopAnimation}
+                disabled={!isRunning}
+              >
+                Stop
+              </button>
+            </div>
+          );
+        }
+      }
+
+      class Yellow extends React.Component {
+        render() {
+          return (
+            <div>
+              <label htmlFor="result_main">Result:</label>
+              <output id="result_main">{this.props.result}</output>
+            </div>
+          );
+        }
+      }
+
+      class Red extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            iterations_worker: 50,
+          };
+        }
+
+        calculatePrimes = () => {
+          const iterations = this.state.iterations_worker || 50;
+          // Wykonaj obliczenia i przekaż wynik do komponentu Szary
+          const result = this.performCalculations(iterations);
+          this.props.updateResultMain(result);
+        };
+
+        performCalculations = (iterations) => {
+          var primes = [];
+          for (var i = 0; i < iterations; i++) {
+            var candidate = i * (1000000000 * Math.random());
+            var isPrime = true;
+            for (var c = 2; c <= Math.sqrt(candidate); ++c) {
+              if (candidate % c === 0) {
+                // not prime
+                isPrime = false;
+                break;
+              }
+            }
+            if (isPrime) {
+              primes.push(candidate);
+            }
+          }
+          return primes;
+        };
+
+        handleIterationsChange = (event) => {
+          this.setState({ iterations_worker: event.target.value });
+        };
+
+        render() {
+          return (
+            <div>
+              <label htmlFor="iterations_worker">Number of iterations:</label>
+              <input
+                id="iterations_worker"
+                type="text"
+                value={this.state.iterations_worker}
+                onChange={this.handleIterationsChange}
+              />
+              <button onClick={this.calculatePrimes}>Run calculations</button>
+            </div>
+          );
+        }
+      }
+
+      class Gray extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            result_main: 0,
+          };
+        }
+
+        updateResultMain = (result) => {
+          this.setState({ result_main: result });
+        };
+
+        render() {
+          return (
+            <div>
+              <Yellow result={this.state.result_main} />
+              <Red updateResultMain={this.updateResultMain} />
+            </div>
+          );
+        }
+      }
+      const root = ReactDOM.createRoot(document.querySelector("#c1"));
+      root.render(<Counter />);
+      const root2 = ReactDOM.createRoot(document.querySelector("#szary1"));
+      root2.render(<Gray />);
+      const root3 = ReactDOM.createRoot(document.querySelector("#c2"));
+      root3.render(<Counter />);
+      const root4 = ReactDOM.createRoot(document.querySelector("#szary2"));
+      root4.render(<Gray />);
+    </script>
+  </body>
+</html>
